@@ -1,4 +1,10 @@
--   id: brie-commit
-    name: 🧀🧀🧀
-    entry: echo "So Cheesy!"
-    language: system
+- id: brie-commit
+  name: 🧀🧀🧀
+  entry: echo "So Cheesy!"
+  language: system
+
+- id: up-to-no-gouda
+  name: good2gouda
+  entry: good2gouda
+  language: python
+  types: [text]

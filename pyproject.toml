@@ -1,0 +1,76 @@
+[tool.poetry]
+name = "brie-commit"
+version = "1.1.0"
+description = "A collection of cheesy pre-commit hooks."
+authors = ["sco1 <sco1.git@gmail.com>"]
+
+readme = "README.md"
+homepage = "https://github.com/sco1/"
+repository = "https://github.com/sco1/pre-commit-matlab"
+classifiers = [
+    "Development Status :: 6 - Mature",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Quality Assurance",
+    "Typing :: Typed",
+]
+packages = [{include = "brie_commit"},]
+
+[tool.poetry.scripts]
+good2gouda = "brie_commit.gouda:main"
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+
+[tool.poetry.dev-dependencies]
+black = "^22.8"
+bump2version = "^1.0"
+flake8 = "^6.0"
+flake8-annotations = "^3.0"
+flake8-bugbear = "^23.1"
+flake8-docstrings = "^1.6"
+flake8-fixme = "^1.1"
+isort = "^5.10"
+mypy = "^0.991"
+pep8-naming = "^0.13"
+pre-commit = "^2.20"
+pytest = "^7.1"
+pytest-cov = "^4.0"
+pytest-randomly = "^3.12"
+tox = "^4.0"
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+case_sensitive = true
+known_first_party = "brie_commit,tests"
+no_lines_before = "LOCALFOLDER"
+order_by_type = false
+profile = "black"
+
+[tool.mypy]
+disallow_incomplete_defs = true
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+no_implicit_optional = true
+show_error_codes = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[build-system]
+requires = ["poetry-core>=1.2.0"]
+build-backend = "poetry.core.masonry.api"
