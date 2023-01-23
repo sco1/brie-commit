@@ -1,0 +1,4 @@
+-   id: brie-commit
+    name: 🧀🧀🧀
+    entry: echo "So Cheesy!"
+    language: system
