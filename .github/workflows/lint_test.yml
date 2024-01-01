@@ -14,10 +14,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Install Poetry for caching
+      run: pipx install poetry
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.x'
+        cache: 'poetry'
 
     - name: Install dependencies
       run: |
@@ -33,13 +36,24 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13-dev"]
       fail-fast: false
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Install Poetry for caching
+      run: pipx install poetry
+
+    - name: Set up (release) Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
+      if: "!endsWith(matrix.python-version, '-dev')"
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'poetry'
+
+    - name: Set up (deadsnakes) Python ${{ matrix.python-version }}
+      uses: deadsnakes/action@v3.0.0
+      if: endsWith(matrix.python-version, '-dev')
       with:
         python-version: ${{ matrix.python-version }}
 
