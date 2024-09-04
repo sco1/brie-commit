@@ -35,6 +35,6 @@ $ pre-commit run -a
 good2gouda...............................................................Failed
 - hook id: up-to-no-gouda
 - files were modified by this hook
-$ cat ./gouda_vibes.txt 
+$ cat ./gouda_vibes.txt
 This is looking pretty gouda.
 ```
