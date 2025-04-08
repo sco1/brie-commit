@@ -1,16 +1,17 @@
-[tool.poetry]
+[project]
 name = "brie-commit"
 version = "1.1.0"
 description = "A collection of cheesy pre-commit hooks."
-authors = ["sco1 <sco1.git@gmail.com>"]
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    {name = "sco1", email = "sco1.git@gmail.com"}
+]
 
 readme = "README.md"
-homepage = "https://github.com/sco1/"
-repository = "https://github.com/sco1/brie-commit"
 classifiers = [
     "Development Status :: 6 - Mature",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.9",
@@ -23,26 +24,37 @@ classifiers = [
     "Topic :: Software Development :: Quality Assurance",
     "Typing :: Typed",
 ]
-packages = [{include = "brie_commit"},]
 
-[tool.poetry.scripts]
+requires-python = ">=3.9"
+dependencies = [
+]
+
+[project.urls]
+Homepage = "https://github.com/sco1/"
+Documentation = "https://github.com/sco1/brie-commit/blob/main/README.md"
+Repository = "https://github.com/sco1/brie-commit.git"
+Issues = "https://github.com/sco1/brie-commit/issues"
+Changelog = "https://github.com/sco1/brie-commit/blob/main/CHANGELOG.md"
+
+[project.scripts]
 good2gouda = "brie_commit.gouda:main"
 
-[tool.poetry.dependencies]
-python = "^3.9"
-
-[tool.poetry.dev-dependencies]
-black = "^24.3"
-bump2version = "^1.0"
-flake8 = "^7.1"
-isort = "^5.10"
-mypy = "^1.0"
-pre-commit = "^4.0"
-pytest = "^8.0"
-pytest-cov = "^6.0"
-pytest-randomly = "^3.12"
-ruff = "^0.7"
-tox = "^4.4"
+[tool.uv]
+dev-dependencies = [
+    "black~=25.0",
+    "bump2version~=1.0",
+    "flake8~=7.1",
+    "flake8-annotations~=3.1",
+    "isort~=6.0",
+    "mypy~=1.14",
+    "pre-commit~=4.0",
+    "pytest~=8.3",
+    "pytest-cov~=6.0",
+    "pytest-randomly~=3.16",
+    "ruff~=0.9",
+    "tox~=4.23",
+    "tox-uv~=1.17",
+]
 
 [tool.black]
 line-length = 100
@@ -68,5 +80,5 @@ warn_unused_configs = true
 warn_unused_ignores = true
 
 [build-system]
-requires = ["poetry-core>=1.2.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"

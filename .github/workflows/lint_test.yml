@@ -14,22 +14,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Install Poetry for caching
-      run: pipx install poetry
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: "0.6.x"
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.x'
-        cache: 'poetry'
+        python-version-file: "pyproject.toml"
 
     - name: Install dependencies
-      run: |
-        python -m pip install -U pip setuptools importlib-metadata
-        python -m pip install poetry
-        poetry install
+      run: uv sync --all-extras --dev
 
     - name: Run mypy
-      run: poetry run mypy .
+      run: uv run mypy .
       if: always()
 
   test:
@@ -41,29 +43,33 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Install Poetry for caching
-      run: pipx install poetry
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: "0.6.x"
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
 
     - name: Set up (release) Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       if: "!endsWith(matrix.python-version, '-dev')"
       with:
         python-version: ${{ matrix.python-version }}
-        cache: 'poetry'
 
     - name: Set up (deadsnakes) Python ${{ matrix.python-version }}
-      uses: deadsnakes/action@v3.1.0
+      uses: deadsnakes/action@v3.2.0
       if: endsWith(matrix.python-version, '-dev')
       with:
         python-version: ${{ matrix.python-version }}
 
     - name: Install dependencies
       run: |
-        python -m pip install -U pip setuptools importlib-metadata
-        pip install tox-gh-actions
+        uv venv
+        uv pip install tox-gh-actions tox-uv
 
     - name: Run tests w/tox
-      run: tox
+      run: uv run tox
 
     - name: Cache coverage for ${{ matrix.python-version }}
       uses: actions/upload-artifact@v4
@@ -79,10 +85,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.x'
+        python-version-file: "pyproject.toml"
 
     - name: Pull coverage workflow artifacts
       uses: actions/download-artifact@v4
@@ -91,16 +98,16 @@ jobs:
 
     - name: Install cov & combine
       run: |
-        pip install coverage
+        python -m pip install coverage
         coverage combine ./cov_cache/**/.coverage
 
     - name: Report coverage
       run: |
-        echo '**Combined Coverage**' >> $GITHUB_STEP_SUMMARY
-        echo '```' >> $GITHUB_STEP_SUMMARY
-        coverage report -m --skip-covered >> $GITHUB_STEP_SUMMARY
-        echo '```' >> $GITHUB_STEP_SUMMARY
         coverage html
+
+        # Report a markdown version to the action summary
+        echo '**Combined Coverage**' >> $GITHUB_STEP_SUMMARY
+        coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
 
     - name: Publish cov HTML
       uses: actions/upload-artifact@v4
